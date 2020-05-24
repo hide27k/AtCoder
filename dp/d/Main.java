@@ -10,7 +10,29 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
+        int N = ni();
+        int W = ni();
+        int[] weight = new int[110];
+        int[] value = new int[110];
+        for (int i = 0; i < N; i++) {
+            weight[i] = ni();
+            value[i] = ni();
+        }
 
+        // DP Loop
+        long[][] dp = new long[110][100100];
+        for (int i = 0; i < N; i++) {
+            for (int sumW = 0; sumW <= W; sumW++) {
+                // i番目の品物を選ぶ
+                if (sumW - weight[i] >= 0) {
+                    dp[i + 1][sumW] = Math.max(dp[i + 1][sumW], dp[i][sumW - weight[i]] + value[i]);
+                }
+                // i番目の品物を選ばない
+                dp[i + 1][sumW] = Math.max(dp[i + 1][sumW], dp[i][sumW]);
+            }
+        }
+
+        out.println(dp[N][W]);
     }
 
     public static void main(String[] args) throws Exception {

@@ -10,34 +10,12 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        int N = ni();
-        long[][] happy = new long[100010][3];
-
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < 3; j++) {
-                happy[i][j] = nl();
-            }
+        int n = ni();
+        if (n >= 1000) {
+            out.println("ABD");
+        } else {
+            out.println("ABC");
         }
-
-        long[][] dp = new long[100010][3];
-
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < 3; j++) {
-                for (int k = 0; k < 3; k++) {
-                    if (j == k) {
-                        continue;
-                    }
-                    dp[i + 1][k] = Math.max(dp[i + 1][k], dp[i][j] + happy[i][k]);
-                }
-            }
-        }
-
-        long res = 0;
-        for (int j = 0; j < 3; j++) {
-            res = Math.max(res, dp[N][j]);
-        }
-        out.println(res);
-
     }
 
     public static void main(String[] args) throws Exception {

@@ -10,34 +10,38 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        int N = ni();
-        long[][] happy = new long[100010][3];
+        // Initialize
+        int numQuestion = ni();
+        int[] points = new int[numQuestion];
 
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < 3; j++) {
-                happy[i][j] = nl();
-            }
+        for (int i = 0; i < numQuestion; i++) {
+            points[i] = ni();
         }
 
-        long[][] dp = new long[100010][3];
+        // DP Loop
+        int[][] dp = new int[101][100 * 101];
+        dp[0][0] = 1;
+        for (int i = 1; i <= numQuestion; i++) {
+            for (int j = 0; j < dp[i].length; j++) {
+                if (dp[i - 1][j] == 1) {
+                    // Won't solve i-th question.
+                    dp[i][j] = 1;
 
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < 3; j++) {
-                for (int k = 0; k < 3; k++) {
-                    if (j == k) {
-                        continue;
-                    }
-                    dp[i + 1][k] = Math.max(dp[i + 1][k], dp[i][j] + happy[i][k]);
+                    // Solve
+                    dp[i][j + points[i - 1]] = 1;
                 }
             }
         }
 
-        long res = 0;
-        for (int j = 0; j < 3; j++) {
-            res = Math.max(res, dp[N][j]);
+        // Find ans
+        int ans = 0;
+        for (int i : dp[numQuestion]) {
+            if (i == 1) {
+                ans++;
+            }
         }
-        out.println(res);
 
+        out.println(ans);
     }
 
     public static void main(String[] args) throws Exception {

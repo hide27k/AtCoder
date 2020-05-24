@@ -11,33 +11,26 @@ public class Main {
 
     static void solve() {
         int N = ni();
-        long[][] happy = new long[100010][3];
+        int[] dp = new int[110000];
+        for (int i = 0; i < 110000; i++) {
+            dp[i] = i;
+        }
 
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < 3; j++) {
-                happy[i][j] = nl();
+        for (int i = 0; i <= N; i++) {
+            int six = 6;
+            int nine = 9;
+            while (i + six <= N) {
+                dp[i + six] = Math.min(dp[i + six], dp[i] + 1);
+                six *= 6;
+            }
+
+            while (i + nine <= N) {
+                dp[i + nine] = Math.min(dp[i + nine], dp[i] + 1);
+                nine *= 9;
             }
         }
 
-        long[][] dp = new long[100010][3];
-
-        for (int i = 0; i < N; i++) {
-            for (int j = 0; j < 3; j++) {
-                for (int k = 0; k < 3; k++) {
-                    if (j == k) {
-                        continue;
-                    }
-                    dp[i + 1][k] = Math.max(dp[i + 1][k], dp[i][j] + happy[i][k]);
-                }
-            }
-        }
-
-        long res = 0;
-        for (int j = 0; j < 3; j++) {
-            res = Math.max(res, dp[N][j]);
-        }
-        out.println(res);
-
+        out.println(dp[N]);
     }
 
     public static void main(String[] args) throws Exception {

@@ -10,7 +10,30 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
+        // Set up
+        int N = ni();
+        int K = ni();
+        int[] h = new int[110000];
+        for (int i = 0; i < N; i++) {
+            h[i] = ni();
+        }
 
+        // 最小化問題なので、MAX_VALUEで初期化。
+        // 範囲を超えても大丈夫なように配列のサイズも最大に。
+        int[] dp = new int[110000];
+        for (int i = 0; i < 110000; i++) {
+            dp[i] = Integer.MAX_VALUE;
+        }
+
+        // 配るDP。
+        dp[0] = 0;
+        for (int i = 0; i < N; i++) {
+            for (int j = 1; j <= K; j++) {
+                dp[i + j] = Math.min(dp[i + j], dp[i] + Math.abs(h[i] - h[i + j]));
+            }
+        }
+
+        out.println(dp[N - 1]);
     }
 
     public static void main(String[] args) throws Exception {
