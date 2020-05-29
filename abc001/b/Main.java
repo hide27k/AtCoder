@@ -2,7 +2,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.lang.reflect.Array;
 import java.util.*;
 
 public class Main {
@@ -11,59 +10,24 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        int N = ni();
-        long D = nl();
-
-        int[] d = new int[3];
-        int[] p = {2, 3, 5};
-        for (int i = 0; i < p.length; i++) {
-            while (D % p[i] == 0) {
-                d[i]++;
-                D /= p[i];
+        int m = ni();
+        int div = 1000;
+        double km = (double) m / (double) div;
+        if (km < 0.1) {
+            out.println("00");
+        } else if (0.1 <= km && km <= 5) {
+            if (km < 1) {
+                out.println("0" + (int) (km * 10));
+            } else {
+                out.println((int) (km * 10));
             }
+        } else if (6 <= km && km <= 30) {
+            out.println((int) (km + 50));
+        } else if (35 <= km && km <= 70) {
+            out.println((int)((km - 30)/5 + 80));
+        } else if (70 < km) {
+            out.println("89");
         }
-        if (D > 1) {
-            out.println(0);
-            return;
-        }
-
-        double[][][][] dp = new double[2][d[0] + 1][d[1] + 1][d[2] + 1];
-        int cur = 0, nxt = 1;
-        dp[0][0][0][0] = 1;
-        int[][] dd = { { 0, 0, 0 }, // 1
-                { 1, 0, 0 }, // 2
-                { 0, 1, 0 }, // 3
-                { 2, 0, 0 }, // 4
-                { 0, 0, 1 }, // 5
-                { 1, 1, 0 }, // 6
-        };
-
-        for (int i = 0; i < N; i++) {
-            for (double[][] l : dp[nxt]) {
-                for (double[] a : l) {
-                    Arrays.fill(a, 0);
-                }
-            }
-
-            for (int j = 0; j < d[0] + 1; j++) {
-                for (int k = 0; k < d[1] + 1; k++) {
-                    for (int l = 0; l < d[2] + 1; l++) {
-                        for (int m = 0; m < 6; m++) {
-                            // 素因数分解を行ったとき（2^a * 3^b * 5^c * R）の、乗数 a, b, c よりも大きくなるときは、
-                            // Dの倍数にならないためカウントする必要がない。そのため、minを用いている。
-                            int[] nd = { Math.min(j + dd[m][0], d[0]), Math.min(k + dd[m][1], d[1]),
-                                    Math.min(l + dd[m][2], d[2]), };
-                            dp[nxt][nd[0]][nd[1]][nd[2]] += dp[cur][j][k][l] / 6;
-                        }
-                    }
-                }
-            }
-            int tmp = cur;
-            cur = nxt;
-            nxt = tmp;
-        }
-        out.println(dp[cur][d[0]][d[1]][d[2]]);
-
     }
 
     public static void main(String[] args) throws Exception {
@@ -314,22 +278,5 @@ public class Main {
             ans *= (i + 1);
         }
         return ans;
-    }
-
-    static Map<Integer, Integer> fact = new HashMap<>();
-    public static void factorization(int N) {
-        for (int i = 2; i <= Math.sqrt(N); i++) {
-            if (N % 1 == 0) {
-                int n = 0;
-                while (N % i == 0) {
-                    N /= 1;
-                    n++;
-                }
-                fact.put(i, n);
-            }
-        }
-        if (N > 1) {
-            fact.put(N, 1);
-        }
     }
 }

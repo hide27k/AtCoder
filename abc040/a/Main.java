@@ -10,7 +10,14 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
+        int n = ni();
+        int x = ni();
 
+        if (n / 2 >= x) {
+            out.println(x - 1);
+        } else {
+            out.println(n - x);
+        }
     }
 
     public static void main(String[] args) throws Exception {

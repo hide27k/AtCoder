@@ -10,7 +10,13 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-
+        int n = ni();
+        int res = Integer.MAX_VALUE;
+        for (int h = 1; h <= n ; h++) {
+            int w = n / h;
+            res = Math.min(res, Math.abs(h - w) + n - (h * w));
+        }
+        out.println(res);
     }
 
     public static void main(String[] args) throws Exception {
