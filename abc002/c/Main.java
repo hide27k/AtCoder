@@ -10,62 +10,19 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        int D = ni();
-        int N = ni();
-        int[] T = new int[D];
-        int[] A = new int[N];
-        int[] B = new int[N];
-        int[] C = new int[N];
-        for (int i = 0; i < D; i++) {
-            T[i] = ni();
-        }
-        for (int i = 0; i < N; i++) {
-            A[i] = ni();
-            B[i] = ni();
-            C[i] = ni();
+        int[][] points = new int[3][2];
+        for (int i = 0; i < 3; i++) {
+            points[i][0] = ni();
+            points[i][1] = ni();
         }
 
-        boolean[][] suit = new boolean[D+1][N+1];
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                suit[i][j] = (A[j] <= T[i] && T[i] <= B[j]);
-            }
-        }
+        int difx = points[0][0] - 0;
+        int dify = points[0][1] - 0;
 
-        int[][] dp = new int[D + 1][N];
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                dp[i][j] = -1;
-            }
-        }
+        double area = (double) Math.abs((points[1][0] - difx) * (points[2][1] - dify)
+                        - (points[1][1] - dify) * (points[2][0] - difx)) / 2;
 
-        for (int j = 0; j < N; ++j) {
-            if (suit[0][j]) {
-                dp[0][j] = 0;
-            }
-        }
-
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                if (dp[i][j] >= 0) {
-                    for (int k = 0; k < N; k++) {
-                        if (suit[i + 1][k]) {
-                            if (dp[i + 1][k] < dp[i][j] + Math.abs(C[j] - C[k])) {
-                                dp[i + 1][k] = dp[i][j] + Math.abs(C[j] - C[k]);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        int ans = -1;
-        for (int j = 0; j < N; ++j) {
-            if (ans < dp[D - 1][j]) {
-                ans = dp[D - 1][j];
-            }
-        }
-        out.println(ans);
+        out.println(area);
     }
 
     public static void main(String[] args) throws Exception {

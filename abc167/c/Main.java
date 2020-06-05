@@ -10,62 +10,47 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        int D = ni();
         int N = ni();
-        int[] T = new int[D];
-        int[] A = new int[N];
-        int[] B = new int[N];
-        int[] C = new int[N];
-        for (int i = 0; i < D; i++) {
-            T[i] = ni();
-        }
+        int M = ni();
+        int X = ni();
+
+        int[][] books = new int[N][M + 1];
         for (int i = 0; i < N; i++) {
-            A[i] = ni();
-            B[i] = ni();
-            C[i] = ni();
-        }
-
-        boolean[][] suit = new boolean[D+1][N+1];
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                suit[i][j] = (A[j] <= T[i] && T[i] <= B[j]);
+            books[i][0] = ni();
+            for (int j = 1; j < M + 1; j++) {
+                books[i][j] = ni();
             }
         }
 
-        int[][] dp = new int[D + 1][N];
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                dp[i][j] = -1;
-            }
-        }
-
-        for (int j = 0; j < N; ++j) {
-            if (suit[0][j]) {
-                dp[0][j] = 0;
-            }
-        }
-
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                if (dp[i][j] >= 0) {
-                    for (int k = 0; k < N; k++) {
-                        if (suit[i + 1][k]) {
-                            if (dp[i + 1][k] < dp[i][j] + Math.abs(C[j] - C[k])) {
-                                dp[i + 1][k] = dp[i][j] + Math.abs(C[j] - C[k]);
-                            }
-                        }
+        int[] sums = new int[M];
+        int price = Integer.MAX_VALUE;
+        for (int bit = 0; bit < (1 << N); bit++) {
+            int temp = 0;
+            Arrays.fill(sums, 0);
+            for (int i = 0; i < N; i++) {
+                if ((bit & (1 << i)) != 0) {
+                    for (int j = 1; j < M + 1; j++) {
+                        sums[j - 1] += books[i][j];
                     }
+                    temp += books[i][0];
                 }
             }
-        }
-
-        int ans = -1;
-        for (int j = 0; j < N; ++j) {
-            if (ans < dp[D - 1][j]) {
-                ans = dp[D - 1][j];
+            boolean good = true;
+            for (int i : sums) {
+                if (i < X) {
+                    good = false;
+                }
+            }
+            if (good) {
+                price = Math.min(price, temp);
             }
         }
-        out.println(ans);
+
+        if (price == 2147483647) {
+            out.println(-1);
+        } else {
+            out.println(price);
+        }
     }
 
     public static void main(String[] args) throws Exception {

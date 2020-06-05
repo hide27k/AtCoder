@@ -8,64 +8,76 @@ public class Main {
     static InputStream is;
     static PrintWriter out;
     static String INPUT = "";
+    static int H;
+    static int W;
+    static char[][] town;
+    static boolean[][] seen = new boolean[510][510];
+    static int[] dx = {1, 0, -1, 0};
+    static int[] dy = {0, 1, 0, -1};
 
     static void solve() {
-        int D = ni();
-        int N = ni();
-        int[] T = new int[D];
-        int[] A = new int[N];
-        int[] B = new int[N];
-        int[] C = new int[N];
-        for (int i = 0; i < D; i++) {
-            T[i] = ni();
-        }
-        for (int i = 0; i < N; i++) {
-            A[i] = ni();
-            B[i] = ni();
-            C[i] = ni();
-        }
-
-        boolean[][] suit = new boolean[D+1][N+1];
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                suit[i][j] = (A[j] <= T[i] && T[i] <= B[j]);
+        H = ni();
+        W = ni();
+        town = new char[H][W];
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < W; j++) {
+                town[i][j] = nc();
             }
         }
 
-        int[][] dp = new int[D + 1][N];
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                dp[i][j] = -1;
-            }
-        }
-
-        for (int j = 0; j < N; ++j) {
-            if (suit[0][j]) {
-                dp[0][j] = 0;
-            }
-        }
-
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                if (dp[i][j] >= 0) {
-                    for (int k = 0; k < N; k++) {
-                        if (suit[i + 1][k]) {
-                            if (dp[i + 1][k] < dp[i][j] + Math.abs(C[j] - C[k])) {
-                                dp[i + 1][k] = dp[i][j] + Math.abs(C[j] - C[k]);
-                            }
-                        }
-                    }
+        int sh = -1, sw = -1, gh = -1, gw = -1;
+        for (int h = 0; h < H; h++) {
+            for (int w = 0; w < W; w++) {
+                if (town[h][w] == 's') { 
+                    sh = h;
+                    sw = w;
+                }
+                if (town[h][w] == 'g') {
+                    gh = h;
+                    gw = w;
                 }
             }
         }
 
-        int ans = -1;
-        for (int j = 0; j < N; ++j) {
-            if (ans < dp[D - 1][j]) {
-                ans = dp[D - 1][j];
-            }
+        if (sh == -1 || sw == -1 || gh == -1 || gw == -1) {
+            out.println("No");
+            return;
         }
-        out.println(ans);
+
+        for (boolean[] arr : seen) {
+            Arrays.fill(arr, false);
+        }
+
+        dfs(sh, sw);
+
+        if (seen[gh][gw]) {
+            out.println("Yes");
+        } else {
+            out.println("No");
+        }
+
+    }
+
+    public static void dfs(int h, int w) {
+        seen[h][w] = true;
+
+        for (int dir = 0; dir < 4; dir++) {
+            int nh = h + dx[dir];
+            int nw = w + dy[dir];
+
+            // 場外アウトしたり、移動先が壁の場合はスルー
+            if (nh < 0 || nh >= H || nw < 0 || nw >= W)
+                continue;
+            if (town[nh][nw] == '#')
+                continue;
+
+            // 移動先が探索済みの場合
+            if (seen[nh][nw])
+                continue;
+
+            // 再帰的に探索
+            dfs(nh, nw);
+        }
     }
 
     public static void main(String[] args) throws Exception {

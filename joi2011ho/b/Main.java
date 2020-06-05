@@ -10,62 +10,49 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        int D = ni();
-        int N = ni();
-        int[] T = new int[D];
-        int[] A = new int[N];
-        int[] B = new int[N];
-        int[] C = new int[N];
-        for (int i = 0; i < D; i++) {
-            T[i] = ni();
-        }
-        for (int i = 0; i < N; i++) {
-            A[i] = ni();
-            B[i] = ni();
-            C[i] = ni();
+        int n = ni();
+        int k = ni();
+        List<Integer>[] gs = new List[10];
+        for (int i = 0; i < 10; i++) {
+            gs[i] = new ArrayList<>();
         }
 
-        boolean[][] suit = new boolean[D+1][N+1];
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                suit[i][j] = (A[j] <= T[i] && T[i] <= B[j]);
+        for (int i = 0; i < n; i++) {
+            int c = ni();
+            int g = ni() - 1;
+            gs[g].add(c);
+        }
+
+        for (int i = 0; i < 10; i++) {
+            Collections.sort(gs[i], Collections.reverseOrder());
+        }
+
+        List<Integer>[] item = new List[gs.length];
+        for (int i = 0; i < item.length; i++) {
+            item[i] = new ArrayList<>();
+            item[i].add(0);
+        }
+
+        for (int i = 0; i < item.length; i++) {
+            for (int j = 0; j < gs[i].size(); j++) {
+                item[i].add(item[i].get(j) + gs[i].get(j) + j * 2);
             }
         }
 
-        int[][] dp = new int[D + 1][N];
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                dp[i][j] = -1;
-            }
-        }
-
-        for (int j = 0; j < N; ++j) {
-            if (suit[0][j]) {
-                dp[0][j] = 0;
-            }
-        }
-
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                if (dp[i][j] >= 0) {
-                    for (int k = 0; k < N; k++) {
-                        if (suit[i + 1][k]) {
-                            if (dp[i + 1][k] < dp[i][j] + Math.abs(C[j] - C[k])) {
-                                dp[i + 1][k] = dp[i][j] + Math.abs(C[j] - C[k]);
-                            }
-                        }
-                    }
+        int[][] dp = new int[2][k + 1];
+        for (int i = 0; i < 10; i++) {
+            for (int j = k; j >= 0; j--) {
+                for (int h = 1; h < item[i].size(); h++) {
+                    if (j - h < 0)
+                        break;
+                    dp[1][j] = Math.max(dp[1][j], dp[0][j - h] + item[i].get(h));
                 }
             }
+
+            dp[0] = dp[1];
         }
 
-        int ans = -1;
-        for (int j = 0; j < N; ++j) {
-            if (ans < dp[D - 1][j]) {
-                ans = dp[D - 1][j];
-            }
-        }
-        out.println(ans);
+        out.println(dp[1][k]);
     }
 
     public static void main(String[] args) throws Exception {

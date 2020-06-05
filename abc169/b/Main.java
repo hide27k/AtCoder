@@ -10,62 +10,28 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        int D = ni();
-        int N = ni();
-        int[] T = new int[D];
-        int[] A = new int[N];
-        int[] B = new int[N];
-        int[] C = new int[N];
-        for (int i = 0; i < D; i++) {
-            T[i] = ni();
-        }
-        for (int i = 0; i < N; i++) {
-            A[i] = ni();
-            B[i] = ni();
-            C[i] = ni();
+        int n = ni();
+        long[] nums = new long[n];
+        for (int i = 0; i < n; i++) {
+            nums[i] = nl();
         }
 
-        boolean[][] suit = new boolean[D+1][N+1];
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                suit[i][j] = (A[j] <= T[i] && T[i] <= B[j]);
+        Arrays.sort(nums);
+        if (nums[0] == 0) {
+            out.println(0);
+            return;
+        }
+        long prod = 1L;
+        for (long i : nums) {
+            if (i <= 1000000000000000000L / prod) {
+                prod *= i;
+            } else {
+                out.println(-1);
+                return;
             }
         }
 
-        int[][] dp = new int[D + 1][N];
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                dp[i][j] = -1;
-            }
-        }
-
-        for (int j = 0; j < N; ++j) {
-            if (suit[0][j]) {
-                dp[0][j] = 0;
-            }
-        }
-
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                if (dp[i][j] >= 0) {
-                    for (int k = 0; k < N; k++) {
-                        if (suit[i + 1][k]) {
-                            if (dp[i + 1][k] < dp[i][j] + Math.abs(C[j] - C[k])) {
-                                dp[i + 1][k] = dp[i][j] + Math.abs(C[j] - C[k]);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        int ans = -1;
-        for (int j = 0; j < N; ++j) {
-            if (ans < dp[D - 1][j]) {
-                ans = dp[D - 1][j];
-            }
-        }
-        out.println(ans);
+        out.println(prod);
     }
 
     public static void main(String[] args) throws Exception {

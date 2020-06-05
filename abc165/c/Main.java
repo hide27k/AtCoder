@@ -10,62 +10,40 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        int D = ni();
         int N = ni();
-        int[] T = new int[D];
-        int[] A = new int[N];
-        int[] B = new int[N];
-        int[] C = new int[N];
-        for (int i = 0; i < D; i++) {
-            T[i] = ni();
-        }
-        for (int i = 0; i < N; i++) {
-            A[i] = ni();
-            B[i] = ni();
-            C[i] = ni();
-        }
-
-        boolean[][] suit = new boolean[D+1][N+1];
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                suit[i][j] = (A[j] <= T[i] && T[i] <= B[j]);
+        int M = ni();
+        int Q = ni();
+        int[][] scores = new int[Q][4];
+        for (int i = 0; i < Q; i++) {
+            for (int j = 0; j < 4; j++) {
+                scores[i][j] = ni();
             }
         }
+        int ret = dfs(0, new int[N], M, scores);
+        out.println(ret);
+    }
 
-        int[][] dp = new int[D + 1][N];
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                dp[i][j] = -1;
-            }
-        }
-
-        for (int j = 0; j < N; ++j) {
-            if (suit[0][j]) {
-                dp[0][j] = 0;
-            }
-        }
-
-        for (int i = 0; i < D; i++) {
-            for (int j = 0; j < N; j++) {
-                if (dp[i][j] >= 0) {
-                    for (int k = 0; k < N; k++) {
-                        if (suit[i + 1][k]) {
-                            if (dp[i + 1][k] < dp[i][j] + Math.abs(C[j] - C[k])) {
-                                dp[i + 1][k] = dp[i][j] + Math.abs(C[j] - C[k]);
-                            }
-                        }
-                    }
+    private static int dfs(int i, int[] a, int m, int[][] p) {
+        int n = a.length;
+        if (i == n) {
+            int score = 0;
+            for (int[] q : p) {
+                if (a[q[1] - 1] - a[q[0] - 1] == q[2]) {
+                    score += q[3];
                 }
             }
+            return score;
         }
 
-        int ans = -1;
-        for (int j = 0; j < N; ++j) {
-            if (ans < dp[D - 1][j]) {
-                ans = dp[D - 1][j];
-            }
+        int ret = 0;
+        int s = i == 0 ? 1 : a[i - 1];
+        for (int k = s; k <= m; k++) {
+            a[i] = k;
+
+            int v = dfs(i + 1, a, m, p);
+            ret = Math.max(v, ret);
         }
-        out.println(ans);
+        return ret;
     }
 
     public static void main(String[] args) throws Exception {
