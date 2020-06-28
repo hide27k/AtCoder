@@ -10,7 +10,23 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
+        int m = 2019;
+        String s = ns();
+        StringBuilder sb = new StringBuilder(s);
+        sb = sb.reverse();
+        int n = s.length();
+        int x = 1, tot = 0;
+        int[] cnt = new int[m];
+        long ans = 0;
+        for (int i = 0; i < n; i++) {
+            cnt[tot]++;
+            tot += (sb.charAt(i) - '0') * x;
+            tot %= m;
+            ans += cnt[tot];
+            x = x * 10 % m;
+        }
 
+        out.println(ans);
     }
 
     public static void main(String[] args) throws Exception {

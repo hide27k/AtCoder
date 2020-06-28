@@ -10,7 +10,12 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-
+        int N = ni();
+        Set<String> prize = new HashSet<>();
+        for (int i = 0; i < N; i++) {
+            prize.add(ns());
+        }
+        out.println(prize.size());
     }
 
     public static void main(String[] args) throws Exception {

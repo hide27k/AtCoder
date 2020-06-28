@@ -10,7 +10,14 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
+        int s = ni();
+        int w = ni();
 
+        if (w >= s) {
+            out.println("unsafe");
+        } else {
+            out.println("safe");
+        }
     }
 
     public static void main(String[] args) throws Exception {

@@ -10,7 +10,23 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
+        int A = ni();
+        int B = ni();
+        int C = ni();
+        int D = ni();
 
+        while (true) {
+            C -=B;
+            if (C <= 0) {
+                out.println("Yes");
+                return;
+            }
+            A -=D;
+            if (A <= 0) {
+                out.println("No");
+                return;
+            }
+        }
     }
 
     public static void main(String[] args) throws Exception {

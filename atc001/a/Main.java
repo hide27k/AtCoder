@@ -12,23 +12,24 @@ public class Main {
     static int W;
     static char[][] town;
     static boolean[][] seen = new boolean[510][510];
-    static int[] dx = {1, 0, -1, 0};
-    static int[] dy = {0, 1, 0, -1};
+    static int[] dirx = {-1, 0, 1, 0};
+    static int[] diry = {0, 1, 0, -1};
 
     static void solve() {
         H = ni();
         W = ni();
+
         town = new char[H][W];
-        for (int i = 0; i < H; i++) {
-            for (int j = 0; j < W; j++) {
-                town[i][j] = nc();
+        for (int h = 0; h < H; h++) {
+            for (int w = 0; w < W; w++) {
+                town[h][w] = nc();
             }
         }
 
         int sh = -1, sw = -1, gh = -1, gw = -1;
         for (int h = 0; h < H; h++) {
             for (int w = 0; w < W; w++) {
-                if (town[h][w] == 's') { 
+                if (town[h][w] == 's') {
                     sh = h;
                     sw = w;
                 }
@@ -40,12 +41,8 @@ public class Main {
         }
 
         if (sh == -1 || sw == -1 || gh == -1 || gw == -1) {
-            out.println("No");
+            out.println("Yes");
             return;
-        }
-
-        for (boolean[] arr : seen) {
-            Arrays.fill(arr, false);
         }
 
         dfs(sh, sw);
@@ -55,27 +52,27 @@ public class Main {
         } else {
             out.println("No");
         }
-
     }
 
     public static void dfs(int h, int w) {
         seen[h][w] = true;
 
-        for (int dir = 0; dir < 4; dir++) {
-            int nh = h + dx[dir];
-            int nw = w + dy[dir];
+        for (int i = 0; i < 4; i ++) {
+            int nh = h + dirx[i];
+            int nw = w + diry[i];
 
-            // 場外アウトしたり、移動先が壁の場合はスルー
-            if (nh < 0 || nh >= H || nw < 0 || nw >= W)
+            if (nh < 0 || nw < 0 || nh >= H || nw >= W) {
                 continue;
-            if (town[nh][nw] == '#')
-                continue;
+            }
 
-            // 移動先が探索済みの場合
-            if (seen[nh][nw])
+            if (town[nh][nw] == '#') {
                 continue;
+            }
 
-            // 再帰的に探索
+            if (seen[nh][nw]) {
+                continue;
+            }
+
             dfs(nh, nw);
         }
     }
