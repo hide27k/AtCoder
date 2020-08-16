@@ -10,7 +10,19 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
+        int N = ni();
+        int[] friendly = new int[N];
+        for (int i = 0; i < N; i++) {
+            friendly[i] = ni();
+        }
 
+        Arrays.sort(friendly);
+
+        long sum = friendly[N - 1];
+        for (int i = N - 3, j = 2 * N - 3; i >= 0; --i, --j) {
+            sum += friendly[j >> 1];
+        }
+        out.println(sum);
     }
 
     public static void main(String[] args) throws Exception {

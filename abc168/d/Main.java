@@ -17,27 +17,30 @@ public class Main {
             int a = ni() - 1;
             int b = ni() - 1;
             connect[a][b] = 1;
-            connect[b][a] = 0;
+            connect[b][a] = 1;
         }
 
-        List<Integer> point = new ArrayList<>();
-        boolean exit = false;
-        for (int i = 1; i < N; i++) {
-            if (connect[0][i] == 1) {
-                exit = true;
+        Queue<int[]> q = new LinkedList<>();
+        int[] ans = new int[N];
+        int[] visit = new int[N];
+        q.add(new int[]{0, 0});
+        visit[0] = 1;
+        while(!q.isEmpty()) {
+            int[] cur = q.poll();
+            ans[cur[0]] = cur[1];
+            for (int i = 0; i < N; i++) {
+                if (connect[cur[0]][i] == 1) {
+                    if (visit[i] == 1) {
+                        continue;
+                    }
+                    q.add(new int[]{i, cur[1] + 1});
+                    visit[i] = 1;
+                }
             }
-        }
-        if (!exit) {
-            out.println("No");
-            return;
         }
 
         for (int i = 1; i < N; i++) {
-            if (connect[i][0] == 1) {
-                out.println(1);
-            } else {
-                
-            }
+            out.println(ans[i]);
         }
     }
 

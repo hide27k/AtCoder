@@ -10,7 +10,24 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
+        int n = ni();
+        int[] nums = new int[n];
+        for (int i = 0; i < n; i++) {
+            nums[i] = ni();
+        }
 
+        int[] sum = new int[n + 1];
+        sum[0] = 0;
+        for (int i = 0; i < n; i++) {
+            sum[i + 1] = nums[i] + sum[i];
+        }
+
+        int min = Integer.MAX_VALUE;
+        for (int i : sum) {
+            min = Math.min(Math.abs(sum[n] - i - i), min);
+        }
+
+        out.println(min);
     }
 
     public static void main(String[] args) throws Exception {

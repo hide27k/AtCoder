@@ -10,7 +10,11 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
+        int p = ni();
+        int q = ni();
+        int r = ni();
 
+        out.println(Math.min(Math.min(p + q, p + r), q + r));
     }
 
     public static void main(String[] args) throws Exception {

@@ -10,7 +10,21 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-
+         int v = ni();
+         int q = ni();
+         UnionFind u = new UnionFind(v);
+         for (int i = 0; i < q; i++) {
+            int judge = ni();
+            if (judge == 0) {
+                u.union(ni(), ni());
+            } else {
+                if (u.find(ni()) == u.find(ni())) {
+                    out.println("Yes");
+                } else {
+                    out.println("No");
+                }
+            }
+         }
     }
 
     public static void main(String[] args) throws Exception {
