@@ -10,10 +10,11 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        String A = ns();
-        String B = ns();
+        double d = nd();
+        double t = nd();
+        double s = nd();
 
-        out.println((A.length() >= B.length()) ? A : B);
+        out.println((d / s > t) ? "No" : "Yes");
     }
 
     public static void main(String[] args) throws Exception {

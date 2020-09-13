@@ -10,10 +10,27 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        String A = ns();
-        String B = ns();
-
-        out.println((A.length() >= B.length()) ? A : B);
+        String S = ns();
+        String T = ns();
+        String res = "";
+        for (int i = 0; i < S.length(); ++i) {
+            boolean check = true;
+            StringBuilder tmp = new StringBuilder(S);
+            for (int j = 0; j < T.length(); ++j) {
+                if (i + j >= S.length()) { check = false; break; }
+                if (S.charAt(i + j) != '?' && S.charAt(i + j) != T.charAt(j)) { check = false; break; }
+                tmp.setCharAt(i + j, T.charAt(j));
+            }
+            if (check) {
+                for (int k = 0; k < tmp.length(); ++k) {
+                    if (tmp.charAt(k) == '?') tmp.setCharAt(k, 'a');
+                }
+                if (res == "") res = tmp.toString();
+                else res = (res.compareTo(tmp.toString()) < 0) ? res : tmp.toString();
+            }
+        }
+        if (res != "") out.println(res);
+        else out.println("UNRESTORABLE");
     }
 
     public static void main(String[] args) throws Exception {

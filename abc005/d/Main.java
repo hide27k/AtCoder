@@ -10,10 +10,7 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        String A = ns();
-        String B = ns();
 
-        out.println((A.length() >= B.length()) ? A : B);
     }
 
     public static void main(String[] args) throws Exception {

@@ -10,10 +10,26 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        String A = ns();
-        String B = ns();
+        int N = ni();
+        long[] nums = new long[N];
 
-        out.println((A.length() >= B.length()) ? A : B);
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = nl();
+        }
+
+        long sum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            sum += nums[i];
+        }
+
+        long square = (sum * sum) % 1000000007;
+
+        long indSum = 0;
+        for (int i = 0; i < nums.length; i++) {
+            indSum += (nums[i] * nums[i]) % 1000000007;
+        }
+
+        out.println(((square - indSum) >= 0) ? ((square - indSum) % 1000000007 / 2): ((square - indSum) % 1000000007 + 1000000007) / 2);
     }
 
     public static void main(String[] args) throws Exception {

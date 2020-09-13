@@ -10,10 +10,33 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        String A = ns();
-        String B = ns();
+        int time = ni();
+        int total = ni();
+        int[] nums = new int[100];
+        for (int i = 0; i < total; i++) {
+            nums[ni() - 1]++;
+        }
 
-        out.println((A.length() >= B.length()) ? A : B);
+        int customer = ni();
+        for (int i = 0; i < customer; i++) {
+            int visit = ni() - 1;
+            boolean buy = false;
+            for (int j = visit - time; j <= visit; j++) {
+                if (j < 0) {
+                    continue;
+                }
+                if (nums[j] > 0) {
+                    buy = true;
+                    nums[j]--;
+                    break;
+                }
+            }
+            if (!buy) {
+                out.println("no");
+                return;
+            }
+        }
+        out.println("yes");
     }
 
     public static void main(String[] args) throws Exception {

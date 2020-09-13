@@ -10,10 +10,29 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        String A = ns();
-        String B = ns();
+        int N = ni();
+        PriorityQueue<Stack<Integer>> pq = new PriorityQueue<>((o1, o2) -> o2.peek() - o1.peek());
 
-        out.println((A.length() >= B.length()) ? A : B);
+        for (int i = 0; i < N; i++) {
+            int w = ni();
+            if (!pq.isEmpty()) {
+                Stack<Integer> tmp = pq.poll();
+                if (tmp.peek() >= w) {
+                    tmp.add(w);
+                } else {
+                    Stack<Integer> s = new Stack<>();
+                    s.add(w);
+                    pq.add(s);
+                }
+                pq.add(tmp);
+            } else {
+                Stack<Integer> s = new Stack<>();
+                s.add(w);
+                pq.add(s);
+            }
+        }
+
+        System.out.println(pq.size());
     }
 
     public static void main(String[] args) throws Exception {

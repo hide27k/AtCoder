@@ -10,10 +10,16 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        String A = ns();
-        String B = ns();
+        long x = nl();
+        long y = nl();
 
-        out.println((A.length() >= B.length()) ? A : B);
+        long current = x;
+        long count = 1;
+        while (current <= y) {
+            current = current * 2;
+            count++;
+        }
+        out.println(count - 1);
     }
 
     public static void main(String[] args) throws Exception {

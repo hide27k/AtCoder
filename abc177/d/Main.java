@@ -10,10 +10,28 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        String A = ns();
-        String B = ns();
+        int n = ni();
+        int m = ni();
 
-        out.println((A.length() >= B.length()) ? A : B);
+        UnionFindTree uf = new UnionFindTree(n);
+
+        for (int i = 0; i < m; i++) {
+            int a = ni() - 1;
+            int b = ni() - 1;
+            uf.unite(a, b);
+        }
+
+        int min = 0;
+        int[] count = new int[n];
+        for (int i = 0; i < n; i++) {
+            min = Math.max(min, uf.size(i));
+        }
+
+        for (int i : count) {
+            min = Math.max(i, min);
+        }
+
+        out.println(min);
     }
 
     public static void main(String[] args) throws Exception {
@@ -143,60 +161,74 @@ public class Main {
     private static void tr(Object... o) { if(INPUT.length() != 0)System.out.println(Arrays.deepToString(o)); }
 
     // Union-Find
-    // https://algs4.cs.princeton.edu/15uf/UF.java.html
-    public static class UnionFind {
-        private int count = 0;
-        private int[] parent, rank;
+    public static class UnionFindTree {
 
-        public UnionFind(int n) {
-            count = n;
-            parent = new int[n];
-            rank = new int[n];
-            for (int i = 0; i < n; i++) {
-                parent[i] = i;
-            }
+        /**
+         * 各要素に関するデータをこの配列一つで管理する． もし Dat[i] < 0 であれば，i が属する集合の大きさは -Dat[i] であり，i
+         * が属する集合の代表 (root) は i である． Dat[i] >= 0 であれば，i の親は Dat[i] である．
+         */
+        final int[] Dat;
+
+        /**
+         * 全部で n 要素ある素集合を管理する UnionFindTree を構築する．
+         *
+         * @param n 要素の種類数
+         */
+        public UnionFindTree(int n) {
+            this.Dat = new int[n];
+            Arrays.fill(Dat, -1);
         }
 
-        public int find(int p) {
-            while (p != parent[p]) {
-                parent[p] = parent[parent[p]];
-                p = parent[p];
-            }
-            return p;
+        /**
+         * 元 {@code x} が属する集合の代表を amortized O(α(N)) で答える．
+         *
+         * @param x 代表を求めたい元
+         * @return {@code x} が属する集合の代表
+         */
+        public int root(int x) {
+            if (Dat[x] < 0) return x;
+            Dat[x] = root(Dat[x]);
+            return Dat[x];
         }
 
-        public void union(int p, int q) {
-            int rootP = find(p);
-            int rootQ = find(q);
-            if (rootP ==rootQ) return;
-            if (rank[rootQ] > rank[rootP]) {
-                parent[rootP] = rootQ;
-            } else {
-                parent[rootQ] = rootP;
-                if (rank[rootP] == rank[rootQ]) {
-                    rank[rootP]++;
-                }
+        /**
+         * 元 {@code x} が属する集合と元 {@code y} が属する集合を amortized O(α(N)) で merge する．
+         *
+         * @param x
+         * @param y
+         * @return 元々同じ集合に属していれば {@code false}，そうでなければ {@code true}
+         */
+        public boolean unite(int x, int y) {
+            int xr = root(x);
+            int yr = root(y);
+            if (xr == yr) return false;
+            if (Dat[xr] > Dat[yr]) {
+            int tmp = xr; xr = yr; yr = tmp;
             }
-            count--;
+            Dat[xr] += Dat[yr];
+            Dat[yr] = xr;
+            return true;
         }
 
-        public int count() {
-            return count;
+        /**
+         * 元 {@code x} と元 {@code y} が属する集合が同じであるかを amortized O(α(N)) で判定する
+         *
+         * @param x
+         * @param y
+         * @return 同じ集合に属していれば {@code true}，そうでなければ {@code false}
+         */
+        public boolean isSame(int x, int y) {
+            return root(x) == root(y);
         }
 
-        public void print() {
-            out.println("Parent:");
-            for (int i : parent) {
-                out.print(i);
-                out.print(" ");
-            }
-            out.println();
-            out.println("Rank:");
-            for (int i : rank) {
-                out.print(i);
-                out.print(" ");
-            }
-            out.println();
+        /**
+         * 元 {@code x} が属する集合のサイズを amortized O(α(N)) で求める．
+         *
+         * @param x
+         * @return 元 {@code x} が属する集合のサイズ
+         */
+        public int size(int x) {
+            return -Dat[root(x)];
         }
     }
 

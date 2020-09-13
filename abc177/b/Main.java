@@ -10,10 +10,21 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        String A = ns();
-        String B = ns();
+        String s = ns();
+        String t = ns();
 
-        out.println((A.length() >= B.length()) ? A : B);
+        int min = t.length();
+        for (int i = 0; i < s.length() - t.length() + 1; i++) {
+            int count = 0;
+            for (int j = 0; j < t.length(); j++) {
+                if (t.charAt(j) == s.charAt(i + j)) {
+                    count++;
+                }
+            }
+            min = Math.min(min, t.length() - count);
+        }
+
+        out.println(min);
     }
 
     public static void main(String[] args) throws Exception {
