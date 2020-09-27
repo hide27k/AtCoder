@@ -11,34 +11,24 @@ public class Main {
 
     static void solve() {
         int N = ni();
-        int C = ni();
-        int K = ni();
-
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-
+        int T = ni();
+        int[] time = new int[N];
         for (int i = 0; i < N; i++) {
-            pq.add(ni());
+            time[i] = ni();
         }
 
-        int total = 0;
-        while (!pq.isEmpty()) {
-            int p = pq.poll();
-            int ride = 1;
-            while (!pq.isEmpty()) {
-                if (ride == C) {
-                    break;
-                }
-                if (p + K >= pq.peek()) {
-                    pq.poll();
-                    ride++;
-                } else {
-                    break;
-                }
+        long total = 0;
+        long cur = T;
+        for (int i = 1; i < N; i++) {
+            if (time[i] >= cur) {
+                total += T;
+            } else {
+                total += time[i] - time[i - 1];
             }
-            total++;
+            cur = time[i] + T;
         }
 
-        System.out.println(total);
+        System.out.println(total + cur - time[N - 1]);
     }
 
     public static void main(String[] args) throws Exception {

@@ -10,35 +10,26 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        int N = ni();
-        int C = ni();
-        int K = ni();
+        long n = nl();
+        long mod = 1000000007;
+        long total = modpow(10, n, mod);
+        long partial = 2 * modpow(9, n, mod);
+        long both = modpow(8, n, mod);
+        long ans = (total - partial + both) % mod;
+        ans = (ans + mod) % mod;
+        System.out.println(ans);
+    }
 
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-
-        for (int i = 0; i < N; i++) {
-            pq.add(ni());
-        }
-
-        int total = 0;
-        while (!pq.isEmpty()) {
-            int p = pq.poll();
-            int ride = 1;
-            while (!pq.isEmpty()) {
-                if (ride == C) {
-                    break;
-                }
-                if (p + K >= pq.peek()) {
-                    pq.poll();
-                    ride++;
-                } else {
-                    break;
-                }
+    public static long modpow(long a, long n, long mod) {
+        long res = 1;
+        while (n > 0) {
+            if ((n & 1) == 1) {
+                res = res * a % mod;
             }
-            total++;
+            a = a * a % mod;
+            n >>= 1;
         }
-
-        System.out.println(total);
+        return res;
     }
 
     public static void main(String[] args) throws Exception {

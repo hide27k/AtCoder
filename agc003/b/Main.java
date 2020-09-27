@@ -11,34 +11,18 @@ public class Main {
 
     static void solve() {
         int N = ni();
-        int C = ni();
-        int K = ni();
+        int[] A = na(N);
 
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-
-        for (int i = 0; i < N; i++) {
-            pq.add(ni());
-        }
-
-        int total = 0;
-        while (!pq.isEmpty()) {
-            int p = pq.poll();
-            int ride = 1;
-            while (!pq.isEmpty()) {
-                if (ride == C) {
-                    break;
-                }
-                if (p + K >= pq.peek()) {
-                    pq.poll();
-                    ride++;
-                } else {
-                    break;
-                }
+        long pair = 0;
+        for (int i = 0; i < N - 1; i++) {
+            pair += A[i] / 2;
+            if (A[i] % 2 != 0 && A[i + 1] != 0) {
+                A[i + 1]--;
+                pair++;
             }
-            total++;
         }
 
-        System.out.println(total);
+        System.out.println(pair + A[N - 1] / 2);
     }
 
     public static void main(String[] args) throws Exception {

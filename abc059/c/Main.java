@@ -10,35 +10,36 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        int N = ni();
-        int C = ni();
-        int K = ni();
-
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-
-        for (int i = 0; i < N; i++) {
-            pq.add(ni());
+        int n = ni();
+        int[] a = na(n);
+        int[] b = a.clone();
+        for (int i = 0; i < n; i++) {
+            b[i] = -b[i];
         }
 
-        int total = 0;
-        while (!pq.isEmpty()) {
-            int p = pq.poll();
-            int ride = 1;
-            while (!pq.isEmpty()) {
-                if (ride == C) {
-                    break;
-                }
-                if (p + K >= pq.peek()) {
-                    pq.poll();
-                    ride++;
-                } else {
-                    break;
-                }
+        System.out.println(Math.min(f(a), f(b)));
+    }
+
+    public static long f(int[] a) {
+        int n = a.length;
+
+        long sum = 0;
+        long ret = 0;
+        for (int i = 0; i < n; i++) {
+            sum += a[i];
+            if (i % 2 == 0) {
+                // +
+                long d = Math.max(0, 1 - sum);
+                sum += d;
+                ret += d;
+            } else {
+                // -
+                long d = Math.max(0, sum + 1);
+                sum -= d;
+                ret += d;
             }
-            total++;
         }
-
-        System.out.println(total);
+        return ret;
     }
 
     public static void main(String[] args) throws Exception {

@@ -11,34 +11,17 @@ public class Main {
 
     static void solve() {
         int N = ni();
-        int C = ni();
-        int K = ni();
-
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
         for (int i = 0; i < N; i++) {
-            pq.add(ni());
+            int x = ni();
+            int y = ni();
+
+            min = Math.min(min, x + y);
+            max = Math.max(max, x + y);
         }
 
-        int total = 0;
-        while (!pq.isEmpty()) {
-            int p = pq.poll();
-            int ride = 1;
-            while (!pq.isEmpty()) {
-                if (ride == C) {
-                    break;
-                }
-                if (p + K >= pq.peek()) {
-                    pq.poll();
-                    ride++;
-                } else {
-                    break;
-                }
-            }
-            total++;
-        }
-
-        System.out.println(total);
+        out.println(Math.abs(min - max));
     }
 
     public static void main(String[] args) throws Exception {

@@ -11,34 +11,20 @@ public class Main {
 
     static void solve() {
         int N = ni();
-        int C = ni();
-        int K = ni();
+        int[] as = new int[N * 3];
 
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-
-        for (int i = 0; i < N; i++) {
-            pq.add(ni());
+        for (int i = 0; i < N * 3; i++) {
+            as[i] = ni();
         }
 
-        int total = 0;
-        while (!pq.isEmpty()) {
-            int p = pq.poll();
-            int ride = 1;
-            while (!pq.isEmpty()) {
-                if (ride == C) {
-                    break;
-                }
-                if (p + K >= pq.peek()) {
-                    pq.poll();
-                    ride++;
-                } else {
-                    break;
-                }
-            }
-            total++;
+        Arrays.sort(as);
+
+        long sum = 0;
+        for (int i = N; i < N * 3; i += 2) {
+            sum += as[i];
         }
 
-        System.out.println(total);
+        System.out.println(sum);
     }
 
     public static void main(String[] args) throws Exception {

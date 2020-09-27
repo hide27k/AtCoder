@@ -11,34 +11,29 @@ public class Main {
 
     static void solve() {
         int N = ni();
-        int C = ni();
-        int K = ni();
-
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-
+        int x = ni();
+        int[] a = new int[N];
         for (int i = 0; i < N; i++) {
-            pq.add(ni());
+            a[i] = ni();
         }
 
-        int total = 0;
-        while (!pq.isEmpty()) {
-            int p = pq.poll();
-            int ride = 1;
-            while (!pq.isEmpty()) {
-                if (ride == C) {
-                    break;
-                }
-                if (p + K >= pq.peek()) {
-                    pq.poll();
-                    ride++;
-                } else {
-                    break;
-                }
+        long[] cost = new long[N];
+        for (int i = 0; i < N; i++) {
+            int best = Integer.MAX_VALUE;
+
+            for (int j = 0; j < N; j++) {
+                int now = (i + N - j) % N;
+                best = Math.min(best, a[now]);
+                cost[j] += best;
             }
-            total++;
         }
 
-        System.out.println(total);
+        long outp = Long.MAX_VALUE;
+        for (int i = 0; i < N; i++) {
+            outp = Math.min(outp, cost[i] + (long) i * x);
+        }
+
+        out.println(outp);
     }
 
     public static void main(String[] args) throws Exception {

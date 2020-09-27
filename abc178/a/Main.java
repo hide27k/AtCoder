@@ -10,35 +10,9 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        int N = ni();
-        int C = ni();
-        int K = ni();
+        int x = ni();
 
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-
-        for (int i = 0; i < N; i++) {
-            pq.add(ni());
-        }
-
-        int total = 0;
-        while (!pq.isEmpty()) {
-            int p = pq.poll();
-            int ride = 1;
-            while (!pq.isEmpty()) {
-                if (ride == C) {
-                    break;
-                }
-                if (p + K >= pq.peek()) {
-                    pq.poll();
-                    ride++;
-                } else {
-                    break;
-                }
-            }
-            total++;
-        }
-
-        System.out.println(total);
+        out.println((x == 0)? 1 : 0);
     }
 
     public static void main(String[] args) throws Exception {

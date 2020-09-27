@@ -10,35 +10,19 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        int N = ni();
-        int C = ni();
-        int K = ni();
-
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-
-        for (int i = 0; i < N; i++) {
-            pq.add(ni());
-        }
-
-        int total = 0;
-        while (!pq.isEmpty()) {
-            int p = pq.poll();
-            int ride = 1;
-            while (!pq.isEmpty()) {
-                if (ride == C) {
-                    break;
-                }
-                if (p + K >= pq.peek()) {
-                    pq.poll();
-                    ride++;
-                } else {
-                    break;
-                }
+        int s = ni();
+        long mod = 1000000007;
+        long[] dp = new long[s + 1];
+        dp[0] = 1;
+        long x = 0;
+        for (int i = 1; i <= s; i++) {
+            if (i - 3 >= 0) {
+                x += dp[i - 3];
+                x %= mod;
             }
-            total++;
+            dp[i] = x;
         }
-
-        System.out.println(total);
+        System.out.println(dp[s]);
     }
 
     public static void main(String[] args) throws Exception {

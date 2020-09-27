@@ -10,35 +10,46 @@ public class Main {
     static String INPUT = "";
 
     static void solve() {
-        int N = ni();
-        int C = ni();
-        int K = ni();
+        int n = ni();
+        int[] freq = new int[26];
+        String[] words = new String[n];
 
-        PriorityQueue<Integer> pq = new PriorityQueue<>();
-
-        for (int i = 0; i < N; i++) {
-            pq.add(ni());
-        }
-
-        int total = 0;
-        while (!pq.isEmpty()) {
-            int p = pq.poll();
-            int ride = 1;
-            while (!pq.isEmpty()) {
-                if (ride == C) {
-                    break;
-                }
-                if (p + K >= pq.peek()) {
-                    pq.poll();
-                    ride++;
-                } else {
-                    break;
+        for (int j = 0; j < n; j++) {
+            String s = ns();
+            words[j] = s;
+            int[] temp = new int[26];
+            for (char c : s.toCharArray()) {
+                temp[c - 'a']++;
+            }
+            for (int i = 0; i < 26; i++) {
+                if (temp[i] != 0) {
+                    if (freq[i] == 0) {
+                        freq[i] = temp[i];
+                    } else {
+                        freq[i] = Math.min(freq[i], temp[i]);
+                    }
                 }
             }
-            total++;
         }
 
-        System.out.println(total);
+        String res = "";
+        for (int i = 0; i < 26; i++) {
+            if (freq[i] != 0) {
+                boolean ok = true;
+                for (String s : words) {
+                    if (s.indexOf((char) ('a' + i)) == -1) {
+                        ok = false;
+                    }
+                }
+                if (ok) {
+                    for (int j = 0; j < freq[i]; j++) {
+                        res += (char) ('a' + i);
+                    }
+                }
+            }
+        }
+
+        System.out.println(res);
     }
 
     public static void main(String[] args) throws Exception {
